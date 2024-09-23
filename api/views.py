@@ -14,9 +14,9 @@ from email.mime.image import MIMEImage
 
 #Email Sending 
 
-sender = 'info@fmc2024.com'
+sender = 'workshop@fmc2024.com'
 subject="FMC Workshop Badge"
-password="XL@euro24"
+password="wPYp^X4i_5;du*5"
 description = """
 Dear Attendee, 
 
