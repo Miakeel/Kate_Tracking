@@ -84,20 +84,22 @@ WSGI_APPLICATION = 'Kate_Tracking.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 DATABASE_URL = os.environ['DATABASE_URL']
+
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 
 
-conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
 
 
 STORAGES = {
