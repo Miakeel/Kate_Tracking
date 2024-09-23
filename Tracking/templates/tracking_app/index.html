@@ -1,0 +1,38 @@
+{% extends "tracking_app/base.html"%}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="col">
+    </div>
+    <div class="col">
+        <div class="row">
+            <div class="text-center pt-5">
+                <img src="{%static 'visual/gfest.png'%}" alt="" height="143" width="250" color:"#97e601" style="margin-bottom:50px;" >
+                <br>
+                <h3 style="font-weight: bold;"> Dashboard for <span style="color: #97e601; font-weight: bold;">{{ user.username }}</span> </h3>
+                <br>
+                <a href="{% url 'new_participant' %}" type="button" role="button" class="btn btn-outline-info font-weight-bold"> 
+                New participant  </a>
+                <a href="{% url 'participants' %}" type="button" role="button" class="btn btn-outline-info font-weight-bold"> All participants </a>
+            </div>
+            <br>
+        </div>
+        <br>
+        <div class="row">
+            <div class="text-center">
+                <h3>
+                    Total registered participants: <span style="color: #97e601;">{{ totalNr }}</span> <br>
+                    Did attend: <span style="color: #97e601;">{{ attended }}</span> <br>
+                    Did not attend: <span style="color: red;">{{ notAttended }}</span> <br>
+                    Participants inside: <span style="color: #97e601;">{{ inside }}</span>
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+    </div>
+    
+</div>
+
+
+{% endblock content%}

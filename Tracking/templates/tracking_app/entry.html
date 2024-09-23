@@ -1,0 +1,136 @@
+{% extends "tracking_app/base.html" %}
+
+{% block content %}
+
+
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{%static 'visual/main.css'%}">
+    <script src="{% static 'tracking_app/qr-scanner.umd.min.js' %}"></script>
+    <script src="{% static 'tracking_app/qr-scanner-worker.min.js' %}"></script>
+</head>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-1 text-center">
+            <img src="{%static 'visual/gfest.png'%}" alt="" height="75" width="75">
+            <h2 style="font-weight: bold;">Entry Scan</h2>
+            <form method="POST" id="myForm">
+                <div class="text-center">
+                    <div class="d-flex justify-content-center">
+                        {% csrf_token %}
+                
+                        <span class='col'>
+                            <span class="d-flex justify-content-center">
+                                {{ form.qrcode_uuid }}
+                            </span>
+                            <span style="margin-top:25px;">
+                                {{ form.qrcode_uuid.errors}}
+                            <span>
+                            
+                        </span>
+                        
+                        <br>
+                    
+                        {% for error in form.non_field_errors %}
+                            <div style="color: red;">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <br>
+                    <input type="submit" role="button" value="Add Participant" class="btn btn-outline-info btn-lg">
+                
+                    {{ succes|safe }}
+                    <br>
+                    <br>
+                    <video id="video-element" style="height:400px; width:400px;"></video>
+                </div>
+            </form> 
+        </div>
+    </div>
+    
+</div> 
+
+
+<script>
+    
+
+    function drawImge(){
+    var video = document.querySelector("#video-element");
+    var canvas = document.querySelector("#videoCanvas");
+    var ctx = canvas.getContext('2d');
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    var faceArea = 300;
+    var pX=canvas.width/2 - faceArea/2;
+    var pY=canvas.height/2 - faceArea/2;
+
+    ctx.rect(pX,pY,faceArea,faceArea);
+    ctx.lineWidth = "15px";
+    ctx.strokeStyle = "black";    
+    ctx.stroke();
+
+
+    setTimeout(drawImge , 100);
+}
+</script>
+
+<script>
+    let lastScanned = document.getElementById("id_qrcode_uuid").getAttribute("value");
+    console.log(lastScanned);
+    let idCache = {};
+
+    function escapeHtml(unsafe) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+    }  
+
+    function on_detect(data) {
+        data = escapeHtml(data);
+        if(data in idCache)
+            return;
+                    
+        let inputTag = document.getElementById("id_qrcode_uuid");
+
+        if(data == lastScanned)
+            return;
+
+        inputTag.setAttribute("value", data);
+
+        idCache[data] = true;
+
+        document.forms["myForm"].submit();
+    }
+
+
+    QrScanner.WORKER_PATH = "{% static 'tracking_app/qr-scanner-worker.min.js' %}";
+
+    let videoElem = document.getElementById('video-element')
+
+    const qrScanner = new QrScanner(videoElem,
+        result => on_detect(result),//result => console.log('decoded qr code: ', result),
+        undefined,
+        () => {
+            
+            return {
+                x: 0,
+                y: 0,
+                width: videoElem.width,
+                height: videoElem.height,
+                downScaledWidth: QrScanner._legacyCanvasSize,
+                downScaledHeight: QrScanner._legacyCanvasSize,
+            }
+        },
+    'user');
+    qrScanner.start();
+</script>
+
+{% endblock %}
