@@ -1,0 +1,1 @@
+web : gunicorn kate_tracking.wsgi
