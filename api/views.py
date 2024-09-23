@@ -84,7 +84,6 @@ def addParticipant(request):
 
         draw.text(((page_width/2 - fontRegular.getlength(title))/2,750),title,'black',fontRegular)
 
-
         page.save('Tracking/static/QR_Codes/%s_%s_%s.png' % (first_name, last_name, participant_id))
         serializer.validated_data['participant_id'] = participant_id
 
