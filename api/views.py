@@ -18,11 +18,17 @@ sender = 'info@fmc2024.com'
 subject="FMC Workshop Badge"
 password="XL@euro24"
 description = """
-Dear Attendee,
-    
-You'll find the acces badge attached to this email
-    
-Best regards,
+Dear Attendee, 
+
+Congratulations! You have successfully registered for the 19th October Workshop. We look forward to welcoming you to this exciting event. 
+
+The workshop details and any additional information will be sent to you via email. If you have any questions or require further assistance, please feel free to contact us. 
+
+Attached to this email you can find the access badge for the event. 
+
+We look forward to seeing you! 
+
+Best regards, 
 FMC Team
 """
 
