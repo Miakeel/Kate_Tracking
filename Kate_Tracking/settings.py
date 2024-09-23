@@ -31,7 +31,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['.ngrok-free.app','localhost','127.0.0.1','kate-tracking-bd3e42adf953.herokuapp.com']
 
-CSRF_TRUSTED_ORIGINS=['https://*.ngrok-free.app','kate-tracking-bd3e42adf953.herokuapp.com']
+CSRF_TRUSTED_ORIGINS=['https://*.ngrok-free.app','https://kate-tracking-bd3e42adf953.herokuapp.com']
 
 
 # Application definition
