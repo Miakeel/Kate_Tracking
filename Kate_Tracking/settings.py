@@ -26,9 +26,9 @@ SECRET_KEY = 'django-insecure-*8rzw$k+f19!b)e*40t6uvd0jqt6a&$wx2ae(7ri(=%*@d%)li
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.ngrok-free.app','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['.ngrok-free.app','localhost','127.0.0.1','kate-tracking-bd3e42adf953.herokuapp.com']
 
-CSRF_TRUSTED_ORIGINS=['https://*.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS=['https://*.ngrok-free.app','kate-tracking-bd3e42adf953.herokuapp.com']
 
 
 # Application definition
