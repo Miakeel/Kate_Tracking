@@ -205,8 +205,8 @@ def participant_entry_view(request):
                 participant.first_name,
                 'entered' if participant.inside else 'exited')
             if participant.inside:
-                context['succes'] = '<div style="color:green;">' + context['succes'] + '</div>'
+                context['succes'] = '<div style="color:green; font-size:0.75em;">' + context['succes'] + '</div>'
             else:
-                context['succes'] = '<div style="color:red;">' + context['succes'] + '</div>'
+                context['succes'] = '<div style="color:red; font-size:0.75em;">' + context['succes'] + '</div>'
 
     return render(request, 'tracking_app/entry.html', context)
