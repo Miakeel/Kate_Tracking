@@ -57,6 +57,47 @@ def logout_view(request):
 def participant_info_view(request,id):
     try:
         participant = Participant.objects.get(pk=id)
+        path='/QR_Codes/%s_%s_%s.png' % (participant.first_name, participant.last_name, participant.participant_id)
+        
+        if not os.path.isfile(path):
+        
+            participant_id=participant.participant_id
+
+            page_width = 2480
+            page_height = 3508
+
+            qr_border = 5
+            qr_width = 500 - qr_border
+            qr_height = 500 - qr_border
+
+            page = Image.new('RGB', (page_width, page_height), (255, 255, 255))
+
+            fontBold=ImageFont.truetype('Tracking/management/commands/Swansea-q3pd.ttf',size=125)
+            fontRegular=ImageFont.truetype('Tracking/management/commands/Swansea-q3pd.ttf',size=100)
+
+            qr_img=qrcode.make(participant_id)
+            qr_img = qr_img.resize((qr_width, qr_height))
+            qr_img = ImageOps.expand(qr_img, border=qr_border, fill='black')
+
+            template = Image.open('Tracking/management/commands/template.png')
+            template = template.resize((page_width, page_height))
+            page.paste(template,(0,0))
+            name=participant.first_name+" "+participant.last_name
+                
+            page.paste(qr_img,(370,1000))
+
+            draw = ImageDraw.Draw(page)
+
+
+            draw.text(((page_width/2 - fontBold.getlength(name))/2,550),name,'black',fontBold)
+
+            draw.text(((page_width/2 - fontRegular.getlength(title))/2,750),title,'black',fontRegular)
+
+
+                
+            page.save('Tracking/static/QR_Codes/%s_%s_%s.png' % (participant.first_name, participant.last_name,participant.participant_id))
+            
+
     except Participant.DoesNotExist:
         return HttpResponse("404 Participant with id '%s' does not exist "%id)
     context={
