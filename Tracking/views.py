@@ -7,6 +7,7 @@ from .models import Participant,QrCodeId, Entry
 from PIL import Image, ImageOps, ImageFont, ImageDraw
 import qrcode
 from django.http import HttpResponse
+import os
 
 # Create your views here.
 
