@@ -92,7 +92,7 @@ def participant_info_view(request,id):
 
             draw.text(((page_width/2 - fontBold.getlength(name))/2,550),name,'black',fontBold)
 
-            draw.text(((page_width/2 - fontRegular.getlength(participant.title))/2,750),title,'black',fontRegular)
+            draw.text(((page_width/2 - fontRegular.getlength(participant.title))/2,750),participant.title,'black',fontRegular)
 
 
                 
