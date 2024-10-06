@@ -3,10 +3,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from .forms import LoginForm, ParticipantForm, EntryForm
+from django.template.loader import render_to_string
 from .models import Participant,QrCodeId, Entry
 from PIL import Image, ImageOps, ImageFont, ImageDraw
 import qrcode
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import os
 
 # Create your views here.
@@ -177,11 +178,28 @@ def new_participant_view(request):
 
 @login_required(redirect_field_name='login', login_url='/login')
 def participants_view(request):
-    participants = Participant.objects.all().order_by('first_name','inside')
+    ctx={}
+    url_parameter = request.GET.get("q")
+    if url_parameter:
+        participants = Participant.objects.filter(first_name__icontains=url_parameter) | Participant.objects.filter(last_name__icontains=url_parameter) | Participant.objects.filter(phone__icontains=url_parameter)
+    else:
+        participants = Participant.objects.all()
+     
+    ctx["participants"]=participants
+    does_req_accept_json = request.accepts("application/json")
+    is_ajax_request = request.headers.get("x-requested-with") == "XMLHttpRequest" and does_req_accept_json
+        
+    if is_ajax_request:
+        html = render_to_string(
+            template_name="tracking_app/participants-results-partial.html", 
+            context={"participants": participants}
+        )
 
-    return render(request, 'tracking_app/participants.html', {
-        'participants': participants
-    })
+        data_dict = {"html_from_view": html}
+
+        return JsonResponse(data=data_dict, safe=False)
+
+    return render(request, 'tracking_app/participants.html', context=ctx)
 
 @login_required(redirect_field_name='login', login_url='/login')
 def participant_entry_view(request):

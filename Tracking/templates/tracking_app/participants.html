@@ -5,6 +5,14 @@
     .td {
         font-weight: bold;
     }
+    .table-responsive {
+        overflow-x: auto;
+    }
+    
+    .table-responsive table {
+        width: 100%;
+        min-width: 100%;
+    }
 </style>
 <br>
 <div class='container'>
@@ -15,49 +23,16 @@
             <h3 style="font-weight: bold;"> Registered participants </h3>
             <br>
             <div class="row">
-                <table class="table table-dark rounded" style="border-radius: 50px; overflow:hidden;">
-                    <thead>
-                        <th> ID </th> <th> First Name </th> <th> Last Name </th> <th> Title </th> <th>Phone Nr</th> <th>Inside</th> <th>Type</th> <th>All Info</th>
-                    </thead>
-                {% for participant in participants %}
-                    <tr style= 
-                        {%if participant.attended %}
-                            "color:#97e601"
-                        {%else %}
-                            "color:red"
-                        {%endif%}
-                    >
-                        <td>{{ participant.id }}</td>
-                        <td>{{ participant.first_name }}</td>
-                        <td>{{ participant.last_name }}</td>
-                        <td>{{ participant.title }}</td>
-                        <td>{{ participant.phone }}</td>
-                        <td    style= 
-                            {% if participant.inside %}
-                                "color:#97e601"
-                            {% else %}
-                                "color:red"
-                            {% endif %}
-                        >{{ participant.inside }} </td>
-                        <td>
-                            {% if participant.participant_type == "DG"%}
-                                Delegate
-                            {% elif participant.participant_type == "SR"%}
-                                Speaker
-                            {% elif participant.participant_type == 'SP' %}
-                                Sponsor
-                            {% endif %}
-                        </td>
-                        <td>
-                            <a href="participant/{{participant.id}}" >
-                                ->
-                            </a>
-                        </td>
-                        {% comment %} <td> <a style="color: #97e601; font-weight: bold;" href="{% url 'edit_participant' participant.id %}"> Edit </a> </td>
-                        <td> <a style="color: #97e601; font-weight:bold ;" href="{% url 'delete' participant.id %}"> Delete </a> </td> {% endcomment %}
-                    </tr>
-                {% endfor %}
-                </table>
+                {# icon and search-box #}
+                <div class="align-center">
+                    <i id="search-icon" class="fas fa-search"></i>
+                    <input id="user-input" placeholder="Search">
+                </div>
+
+                <div id="replaceable-content" class=" col allign-content-center">
+                    {% include 'tracking_app/participants-results-partial.html' %}
+                </div>
+
             </div>
             
         </div>

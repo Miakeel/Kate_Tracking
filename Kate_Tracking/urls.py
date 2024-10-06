@@ -24,7 +24,7 @@ urlpatterns = [
     path('login', tracking_views.login_view, name='login'),
     path('logout', tracking_views.logout_view, name='logout'),
     path('new_participant', tracking_views.new_participant_view, name='new_participant'),
-    path('participants', tracking_views.participants_view, name='participants'),
+    path('participants/', tracking_views.participants_view, name='participants'),
     path('entry', tracking_views.participant_entry_view, name='entry'),
     path('api/',include('api.urls')),
     path('participant/<int:id>',tracking_views.participant_info_view, name='info')

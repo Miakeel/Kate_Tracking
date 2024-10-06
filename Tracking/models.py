@@ -10,7 +10,7 @@ class Participant(models.Model):
     institution=models.CharField(null=False, max_length=50)
     email=models.EmailField(null=False, max_length=50)
     title=models.CharField(null=False, max_length=50)
-    phone=models.CharField(blank=True)
+    phone=models.CharField(blank=True,max_length=14)
     city=models.CharField(null=False, max_length=50)
     country=models.CharField(null=False, max_length=50)
     scfhs_number=models.CharField(null=True, max_length=50, blank=True)

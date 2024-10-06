@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="{%static 'visual/main.css'%}">
     <script src="{% static 'tracking_app/qr-scanner.umd.min.js' %}"></script>
     <script src="{% static 'tracking_app/qr-scanner-worker.min.js' %}"></script>
+    
 </head>
+
 <br>
 <div class="container">
     <div class="row">
@@ -37,12 +39,12 @@
                         {% endfor %}
                     </div>
                     <br>
-                    <input type="submit" role="button" value="Add Participant" class="btn btn-outline-info btn-lg">
+                    <input type="submit" role="button" value="Submit" class="btn btn-outline-info btn-lg">
                 
                     {{ succes|safe }}
                     <br>
                     <br>
-                    <video id="video-element" style="height:400px; width:400px;"></video>
+                    <video id="video-element" style="height:300px; width:300px; object-fit: cover;"></video>
                 </div>
             </form> 
         </div>
@@ -69,12 +71,9 @@
     var pX=canvas.width/2 - faceArea/2;
     var pY=canvas.height/2 - faceArea/2;
 
-    ctx.rect(pX,pY,faceArea,faceArea);
-    ctx.lineWidth = "15px";
-    ctx.strokeStyle = "black";    
-    ctx.stroke();
-
-
+    
+    
+    
     setTimeout(drawImge , 100);
 }
 </script>
@@ -115,22 +114,69 @@
 
     let videoElem = document.getElementById('video-element')
 
-    const qrScanner = new QrScanner(videoElem,
-        result => on_detect(result),//result => console.log('decoded qr code: ', result),
-        undefined,
-        () => {
-            
-            return {
+    navigator.mediaDevices.enumerateDevices()
+  .then(devices => {
+    const videoDevices = devices.filter(device => device.kind === 'videoinput');
+    const backCamera = videoDevices.find(device => device.label.includes('back') || device.label.includes('rear'));
+    if (backCamera) {
+      navigator.mediaDevices.getUserMedia({ video: { deviceId: backCamera.deviceId } })
+        .then(stream => {
+          videoElem.srcObject = stream;
+          const qrScanner = new QrScanner(videoElem,
+            result => on_detect(result),
+            undefined,
+            () => {
+              return {
                 x: 0,
                 y: 0,
                 width: videoElem.width,
                 height: videoElem.height,
                 downScaledWidth: QrScanner._legacyCanvasSize,
                 downScaledHeight: QrScanner._legacyCanvasSize,
+              }
             }
-        },
-    'user');
-    qrScanner.start();
+          );
+          qrScanner.start();
+        })
+        .catch(error => {
+          console.error('Error getting user media:', error);
+        });
+    } else if (videoDevices.length > 0) {
+      navigator.mediaDevices.getUserMedia({ video: { deviceId: videoDevices[0].deviceId } })
+        .then(stream => {
+          videoElem.srcObject = stream;
+          const qrScanner = new QrScanner(videoElem,
+            result => on_detect(result),
+            undefined,
+            () => {
+              return {
+                x: 0,
+                y: 0,
+                width: videoElem.width,
+                height: videoElem.height,
+                downScaledWidth: QrScanner._legacyCanvasSize,
+                downScaledHeight: QrScanner._legacyCanvasSize,
+              }
+            }
+          );
+          qrScanner.start();
+        })
+        .catch(error => {
+          console.error('Error getting user media:', error);
+        });
+    } else {
+      console.log('No camera found');
+    }
+  })
+  .catch(error => {
+    console.error('Error enumerating devices:', error);
+  });
+
+  document.getElementById('myForm').addEventListener('submit', function() {
+
+    document.getElementById('id_qrcode_uuid').value = '';
+  
+  });
 </script>
 
 {% endblock %}

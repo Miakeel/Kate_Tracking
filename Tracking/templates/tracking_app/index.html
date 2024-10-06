@@ -11,9 +11,9 @@
                 <br>
                 <h3 style="font-weight: bold;"> Dashboard for <span style="color: #97e601; font-weight: bold;">{{ user.username }}</span> </h3>
                 <br>
-                <a href="{% url 'new_participant' %}" type="button" role="button" class="btn btn-outline-info font-weight-bold"> 
+                {% comment %} <a href="{% url 'new_participant' %}" type="button" role="button" class="btn btn-outline-success font-weight-bold"> 
                 New participant  </a>
-                <a href="{% url 'participants' %}" type="button" role="button" class="btn btn-outline-info font-weight-bold"> All participants </a>
+                <a href="{% url 'participants' %}" type="button" role="button" class="btn btn-outline-success font-weight-bold"> All participants </a> {% endcomment %}
             </div>
             <br>
         </div>
