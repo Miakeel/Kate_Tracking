@@ -181,10 +181,10 @@ def participants_view(request):
     ctx={}
     url_parameter = request.GET.get("q")
     if url_parameter:
-        participants = Participant.objects.filter(first_name__icontains=url_parameter) | Participant.objects.filter(last_name__icontains=url_parameter) | Participant.objects.filter(phone__icontains=url_parameter)
+        participants = Participant.objects.filter(first_name__icontains=url_parameter) | Participant.objects.filter(last_name__icontains=url_parameter) | Participant.objects.filter(phone__icontains=url_parameter.strip())
     else:
         participants = Participant.objects.all()
-     
+
     ctx["participants"]=participants
     does_req_accept_json = request.accepts("application/json")
     is_ajax_request = request.headers.get("x-requested-with") == "XMLHttpRequest" and does_req_accept_json
