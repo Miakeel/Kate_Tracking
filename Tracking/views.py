@@ -179,12 +179,12 @@ def new_participant_view(request):
 @login_required(redirect_field_name='login', login_url='/login')
 def participants_view(request):
     ctx={}
-    url_parameter = request.GET.get("q")
+    url_parameter = request.GET.get("q").strip()
     if url_parameter:
-        participants = Participant.objects.filter(first_name__icontains=url_parameter) | Participant.objects.filter(last_name__icontains=url_parameter) | Participant.objects.filter(phone__icontains=url_parameter.strip())
+        participants = Participant.objects.filter(first_name__icontains=url_parameter) | Participant.objects.filter(last_name__icontains=url_parameter) | Participant.objects.filter(phone__icontains=url_parameter)
     else:
         participants = Participant.objects.all()
-
+         
     ctx["participants"]=participants
     does_req_accept_json = request.accepts("application/json")
     is_ajax_request = request.headers.get("x-requested-with") == "XMLHttpRequest" and does_req_accept_json
