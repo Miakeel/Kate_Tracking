@@ -179,8 +179,9 @@ def new_participant_view(request):
 @login_required(redirect_field_name='login', login_url='/login')
 def participants_view(request):
     ctx={}
-    url_parameter = request.GET.get("q").strip()
+    url_parameter = request.GET.get("q")
     if url_parameter:
+        url_parameter=url_parameter.strip()
         participants = Participant.objects.filter(first_name__icontains=url_parameter) | Participant.objects.filter(last_name__icontains=url_parameter) | Participant.objects.filter(phone__icontains=url_parameter)
     else:
         participants = Participant.objects.all()
