@@ -1,10 +1,10 @@
 from PIL import Image, ImageOps, ImageFont, ImageDraw
 import qrcode
 
-first_name="Rasha"
-last_name="Al-Madi"
-participant_id="84eb9f92-ce9d-4365-b2b9-b2801a245fdd"
-title="Student"
+first_name="Faris"
+last_name="Al-Rifar"
+participant_id="d9ad980d-1e6f-4f89-ba83-29a425766b4e"
+title="Pharmacist"
 
 page_width = 2480
 page_height = 3508

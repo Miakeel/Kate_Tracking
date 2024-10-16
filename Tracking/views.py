@@ -9,6 +9,7 @@ from PIL import Image, ImageOps, ImageFont, ImageDraw
 import qrcode
 from django.http import HttpResponse, JsonResponse
 import os
+import shutil
 
 # Create your views here.
 
@@ -92,8 +93,9 @@ def participant_info_view(request,id):
 
 
             draw.text(((page_width/2 - fontBold.getlength(name))/2,550),name,'black',fontBold)
-
-            draw.text(((page_width/2 - fontRegular.getlength(participant.title))/2,750),participant.title,'black',fontRegular)
+            sponsors=["AstraZeneca","Novartis"]
+            if participant.institution in sponsors:
+                draw.text(((page_width/2 - fontRegular.getlength(participant.institution))/2,750),participant.institution,'black',fontRegular)
 
 
                 
@@ -199,33 +201,63 @@ def participants_view(request):
         data_dict = {"html_from_view": html}
 
         return JsonResponse(data=data_dict, safe=False)
+    
+    # Archive Generation
+    archive_participants=Participant.objects.all()
+    for participant in archive_participants:
+        path='/QR_Codes/%s_%s_%s.png' % (participant.first_name, participant.last_name, participant.participant_id)
+        if not os.path.isfile(path):
+            participant_id=participant.participant_id
+
+            page_width = 2480
+            page_height = 3508
+
+            page = Image.new('RGB', (page_width, page_height), (255, 255, 255))
+
+            fontBold=ImageFont.truetype('Tracking/management/commands/Swansea-q3pd.ttf',size=125)
+            fontRegular=ImageFont.truetype('Tracking/management/commands/Swansea-q3pd.ttf',size=100)
+            qr_img=qrcode.make(participant_id)
+
+            template = Image.open('Tracking/management/commands/template.png')
+            template = template.resize((page_width, page_height))
+            page.paste(qr_img,(370,1000))
+            name=participant.first_name+" "+participant.last_name
+            draw = ImageDraw.Draw(page)
+
+
+            draw.text(((page_width/2 - fontBold.getlength(name))/2,550),name,'black',fontBold)
+
+                        
+            page.save('Tracking/static/QR_Codes/%s_%s_%s.png' % (participant.first_name, participant.last_name,participant.participant_id))
+            
+    archived = shutil.make_archive('Tracking/static/Badges', 'zip', 'Tracking/static/QR_Codes')
+    ctx["archive_url"]="/Badges.zip"   
+            
 
     return render(request, 'tracking_app/participants.html', context=ctx)
 
-@login_required(redirect_field_name='login', login_url='/login')
 def participant_entry_view(request):
     form = EntryForm(request.POST or None)
     context = {'form': form}
 
-    if request.method == "POST":
-        if form.is_valid():
-            try:
-                participant = Participant.objects.get(participant_id=form.cleaned_data['qrcode_uuid'])
-            except Participant.DoesNotExist:
-                form.add_error(None, "Invalid code")
-                return render(request, 'tracking_app/entry.html', context)
-            participant.inside= not participant.inside
-            participant.attended=True
-            participant.save()
-            Entry.objects.create(participant=participant, exit=not participant.inside)
-            context['succes'] = '%d %s %s has %s' % (
+    if form.is_valid():
+        try:
+            participant = Participant.objects.get(participant_id=form.cleaned_data['qrcode_uuid'])
+        except Participant.DoesNotExist:
+            form.add_error(None, "Invalid code")
+            return render(request, 'tracking_app/entry.html', context)
+        participant.inside= not participant.inside
+        participant.attended=True
+        participant.save()
+        Entry.objects.create(participant=participant, exit=not participant.inside)
+        context['succes'] = '%d %s %s has %s' % (
                 participant.id,
                 participant.last_name,
                 participant.first_name,
                 'entered' if participant.inside else 'exited')
-            if participant.inside:
-                context['succes'] = '<div style="color:green; font-size:2em;">' + context['succes'] + '</div>'
-            else:
-                context['succes'] = '<div style="color:red; font-size:2em;">' + context['succes'] + '</div>'
+        if participant.inside:
+            context['succes'] = '<div style="color:green; font-size:2em;">' + context['succes'] + '</div>'
+        else:
+            context['succes'] = '<div style="color:red; font-size:2em;">' + context['succes'] + '</div>'
 
     return render(request, 'tracking_app/entry.html', context)
