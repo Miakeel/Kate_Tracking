@@ -96,6 +96,8 @@ def participant_info_view(request,id):
             sponsors=["AstraZeneca","Novartis"]
             if participant.institution in sponsors:
                 draw.text(((page_width/2 - fontRegular.getlength(participant.institution))/2,750),participant.institution,'black',fontRegular)
+            else:
+                draw.text(((page_width/2 - fontRegular.getlength(participant.title))/2,750),participant.title,'black',fontRegular)
 
 
                 
@@ -203,35 +205,35 @@ def participants_view(request):
         return JsonResponse(data=data_dict, safe=False)
     
     # Archive Generation
-    # archive_participants=Participant.objects.all()
-    # for participant in archive_participants:
-    #     path='/QR_Codes/%s_%s_%s.png' % (participant.first_name, participant.last_name, participant.participant_id)
-    #     if not os.path.isfile(path):
-    #         participant_id=participant.participant_id
+    archive_participants=Participant.objects.all()
+    for participant in archive_participants:
+        path='/QR_Codes/%s_%s_%s.png' % (participant.first_name, participant.last_name, participant.participant_id)
+        if not os.path.isfile(path):
+            participant_id=participant.participant_id
 
-    #         page_width = 2480
-    #         page_height = 3508
+            page_width = 2480
+            page_height = 3508
 
-    #         page = Image.new('RGB', (page_width, page_height), (255, 255, 255))
+            page = Image.new('RGB', (page_width, page_height), (255, 255, 255))
 
-    #         fontBold=ImageFont.truetype('Tracking/management/commands/Swansea-q3pd.ttf',size=125)
-    #         fontRegular=ImageFont.truetype('Tracking/management/commands/Swansea-q3pd.ttf',size=100)
-    #         qr_img=qrcode.make(participant_id)
+            fontBold=ImageFont.truetype('Tracking/management/commands/Swansea-q3pd.ttf',size=125)
+            fontRegular=ImageFont.truetype('Tracking/management/commands/Swansea-q3pd.ttf',size=100)
+            qr_img=qrcode.make(participant_id)
 
-    #         template = Image.open('Tracking/management/commands/template.png')
-    #         template = template.resize((page_width, page_height))
-    #         page.paste(qr_img,(370,1000))
-    #         name=participant.first_name+" "+participant.last_name
-    #         draw = ImageDraw.Draw(page)
+            template = Image.open('Tracking/management/commands/template.png')
+            template = template.resize((page_width, page_height))
+            page.paste(qr_img,(370,1000))
+            name=participant.first_name+" "+participant.last_name
+            draw = ImageDraw.Draw(page)
 
 
-    #         draw.text(((page_width/2 - fontBold.getlength(name))/2,550),name,'black',fontBold)
+            draw.text(((page_width/2 - fontBold.getlength(name))/2,550),name,'black',fontBold)
 
                         
-    #         page.save('Tracking/static/QR_Codes/%s_%s_%s.png' % (participant.first_name, participant.last_name,participant.participant_id))
+            page.save('Tracking/static/QR_Codes/%s_%s_%s.png' % (participant.first_name, participant.last_name,participant.participant_id))
             
-    # archived = shutil.make_archive('Tracking/static/Badges', 'zip', 'Tracking/static/QR_Codes')
-    # ctx["archive_url"]="/Badges.zip"   
+    archived = shutil.make_archive('Tracking/static/Badges', 'zip', 'Tracking/static/QR_Codes')
+    ctx["archive_url"]="/Badges.zip"   
             
 
     return render(request, 'tracking_app/participants.html', context=ctx)
