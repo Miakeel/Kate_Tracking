@@ -169,7 +169,7 @@ def new_participant_view(request):
             draw.text(((page_width/2 - fontBold.getlength(name))/2,550),name,'black',fontBold)
 
             sponsors=["AstraZeneca","Novartis"]
-            if participant.institution in sponsors:
+            if institution in sponsors:
                 draw.text(((page_width/2 - fontRegular.getlength(participant.institution))/2,750),participant.institution,'black',fontRegular)
             else:
                 draw.text(((page_width/2 - fontRegular.getlength(participant.title))/2,750),participant.title,'black',fontRegular)
