@@ -12,7 +12,7 @@ class ParticipantResource(resources.ModelResource):
 
     class Meta:
         model = Participant
-        fields=('first_name','last_name','institution','email','title','phone','city','country','scfhs_number')
+        fields=('first_name','last_name','institution','email','title','phone','city','country','scfhs_number','attended')
 
 class ParticipantAdmin(ImportExportModelAdmin):
     resource_classes=[ParticipantResource]
