@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'Tracking',
     'rest_framework',
     'import_export',
+    'drf_api_logger'
 ]
 
 MIDDLEWARE = [
@@ -58,7 +59,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    'drf_api_logger.middleware.api_logger_middleware.APILoggerMiddleware',
+    
 ]
+
+DRF_API_LOGGER_DATABASE = True
 
 ROOT_URLCONF = 'Kate_Tracking.urls'
 
