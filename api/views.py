@@ -14,13 +14,13 @@ from email.mime.image import MIMEImage
 
 #Email Sending 
 
-sender = 'workshop@fmc2024.com'
-subject="FMC Workshop Badge"
-password="wPYp^X4i_5;du*5"
+sender = 'info@formularyconference.com'
+subject="Formulary Conference Badge"
+password="qLt?&6%T@c&C"
 description = """
 Dear Attendee, 
 
-Congratulations! You have successfully registered for the 19th October Workshop. We look forward to welcoming you to this exciting event. 
+Congratulations! You have successfully registered for the 14th-15th February Conference. We look forward to welcoming you to this exciting event. 
 
 The workshop details and any additional information will be sent to you via email. If you have any questions or require further assistance, please feel free to contact us. 
 
@@ -79,7 +79,7 @@ def addParticipant(request):
         qr_img = qr_img.resize((qr_width, qr_height))
         qr_img = ImageOps.expand(qr_img, border=qr_border, fill='black')
 
-        template = Image.open('Tracking/management/commands/template.png')
+        template = Image.open('Tracking/management/commands/badge.png')
         template = template.resize((page_width, page_height))
         page.paste(template, (0, 0))
         page.paste(qr_img, (370, 1000))
@@ -106,7 +106,7 @@ def addParticipant(request):
         with open('Tracking/static/QR_Codes/%s_%s_%s.png' % (first_name, last_name, participant_id),'rb') as file:
             message.attach(MIMEImage(file.read(), Name="badge.png"))
 
-        with SMTP_SSL(host='mail.fmc2024.com', port=465, context=create_default_context()) as server:
+        with SMTP_SSL(host='mail.formularyconference.com', port=465, context=create_default_context()) as server:
             try:
                 server.login(sender,password)
                 server.sendmail(sender, serializer.validated_data['email'], message.as_string())
