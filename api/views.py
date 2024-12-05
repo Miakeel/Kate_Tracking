@@ -82,7 +82,7 @@ def addParticipant(request):
         template = Image.open('Tracking/management/commands/badge.png')
         template = template.resize((page_width, page_height))
         page.paste(template, (0, 0))
-        page.paste(qr_img, (370, 1000))
+        page.paste(qr_img, (370, 900))
 
         draw =ImageDraw.Draw(page)
 
