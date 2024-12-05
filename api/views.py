@@ -4,7 +4,7 @@ from Tracking.models import Participant, QrCodeId
 from .serializers import ParticipantSerializer
 from PIL import Image, ImageOps, ImageFont, ImageDraw
 import qrcode
-
+from rest_framework import status
 from smtplib import SMTP_SSL, SMTP, SMTPAuthenticationError
 from ssl import create_default_context
 from email.message import EmailMessage
