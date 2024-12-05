@@ -59,7 +59,7 @@ def addParticipant(request):
     # Set the participant_id field manually in the serializer
     serializer = ParticipantSerializer(data=request.data, context={'participant_id': participant_id})
 
-    if serializer.is_valid():
+    if serializer.is_valid(raise_exception=True):
         first_name = serializer.validated_data.get('first_name')
         last_name = serializer.validated_data.get('last_name')
         title = serializer.validated_data.get('title')
