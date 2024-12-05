@@ -22,14 +22,14 @@ Dear Attendee,
 
 Congratulations! You have successfully registered for the 14th-15th February Conference. We look forward to welcoming you to this exciting event. 
 
-The workshop details and any additional information will be sent to you via email. If you have any questions or require further assistance, please feel free to contact us. 
+The conference details and any additional information will be sent to you via email. If you have any questions or require further assistance, please feel free to contact us. 
 
 Attached to this email you can find the access badge for the event. 
 
 We look forward to seeing you! 
 
 Best regards, 
-FMC Team
+FMC25 Team
 """
 
 @api_view(['GET'])
