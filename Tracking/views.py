@@ -75,7 +75,7 @@ def participant_info_view(request,id):
 
             page = Image.new('RGB', (page_width, page_height), (255, 255, 255))
 
-            fontBold=ImageFont.truetype('Tracking/management/commands/Swansea-q3pd.ttf',size=125)
+            fontBold=ImageFont.truetype('Tracking/management/commands/Swansea-q3pd.ttf',size=105)
             fontRegular=ImageFont.truetype('Tracking/management/commands/Swansea-q3pd.ttf',size=100)
 
             qr_img=qrcode.make(participant_id)
