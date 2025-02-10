@@ -96,8 +96,10 @@ def participant_info_view(request,id):
             sponsors=["AstraZeneca","Novartis"]
             if participant.institution in sponsors:
                 draw.text(((page_width/2 - fontRegular.getlength(participant.institution))/2,750),participant.institution,'black',fontRegular)
-            else:
+            elif fontRegular.getlength(participant.title)<1240 :
                 draw.text(((page_width/2 - fontRegular.getlength(participant.title))/2,750),participant.title,'black',fontRegular)
+            else:
+                draw.text(((page_width/2 - fontRegular.getlength("Attendee"))/2,750),participant.title,'black',fontRegular)
 
 
                 
