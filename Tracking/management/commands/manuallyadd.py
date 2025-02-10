@@ -27,8 +27,8 @@ class Command(BaseCommand):
             attendee=Participant.objects.create()
             attendee.first_name=first_names[i]
             attendee.last_name=last_names[i]
-            attendee.institution=institutions[i]
-            attendee.email=emails[i]
+            # attendee.institution=institutions[i]
+            # attendee.email=emails[i]
             attendee.title=titles[i]
             # attendee.phone=phones[i]
             # attendee.city=cities[i]
