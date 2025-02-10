@@ -40,7 +40,6 @@ class Command(BaseCommand):
             qrCode.save()
             
             attendee.participant_id=qrCode.id
-            attendee.participant_type="Speaker"
             attendee.save()
         
 
