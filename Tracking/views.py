@@ -82,12 +82,12 @@ def participant_info_view(request,id):
             qr_img = qr_img.resize((qr_width, qr_height))
             qr_img = ImageOps.expand(qr_img, border=qr_border, fill='black')
 
-            template = Image.open('Tracking/management/commands/template.png')
+            template = Image.open('Tracking/management/commands/badge.png')
             template = template.resize((page_width, page_height))
             page.paste(template,(0,0))
             name=participant.first_name+" "+participant.last_name
                 
-            page.paste(qr_img,(370,1000))
+            page.paste(qr_img,(370,900))
 
             draw = ImageDraw.Draw(page)
 
