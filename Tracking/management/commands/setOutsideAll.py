@@ -13,5 +13,6 @@ class Command(BaseCommand):
         victims=Participant.objects.all()
         for i in victims:
             i.inside=False
+            i.save()
         
         
